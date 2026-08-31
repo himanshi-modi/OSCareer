@@ -2,7 +2,7 @@
 const AUTH_MESSAGES = require("../constants/messages/authMessages");
 const asyncHandler = require("../utils/asyncHandlers");
 const authService=require("../services/authService");
-const { getLinkedInUser } = require("../services/linkedinService");
+const { getLinkedInUser } = require("../services/linkedInService");
 const generateUniqueUsername = require("../utils/auth/generateUniqueUsername");
 const User = require("../models/User");
 
