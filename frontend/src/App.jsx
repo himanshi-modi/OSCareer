@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import LandingPage from "./pages/LandingPage";
+import LandingPage from "./pages/Landingpage";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import VerifyEmailPending from "./pages/VerifyEmailPending";
