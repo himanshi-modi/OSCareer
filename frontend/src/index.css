@@ -1,0 +1,72 @@
+@import "tailwindcss";
+@theme {
+  --color-career-bg: #070A18;
+  --color-career-surface: #0C1024;
+  --color-career-card: #111631;
+  --color-career-border: #24294A;
+  --color-career-blue: #536DCE;
+  --color-career-purple: #7046A8;
+}
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dashboard-entrance {
+  animation: fadeUp 0.8s ease-out forwards;
+}
+@keyframes progressFill {
+  from {
+    width: 0%;
+  }
+
+  to {
+    width: 64%;
+  }
+}
+
+.progress-bar {
+  animation: progressFill 1.2s ease-out 0.8s forwards;
+  width: 0%;
+}
+@keyframes missionEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mission-entrance {
+  opacity: 0;
+  animation: missionEntrance 0.6s ease-out 1.8s forwards;
+}
+@keyframes authDashboardEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.auth-dashboard-entrance {
+  animation: authDashboardEntrance 0.8s ease-out forwards;
+}
+html {
+  scroll-behavior: smooth;
+}

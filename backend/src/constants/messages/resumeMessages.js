@@ -1,0 +1,22 @@
+module.exports={
+    ONLY_SUPPORTS_FILE:"Only PDF, DOC, and DOCX files are supported.",
+    FILE_REQUIRED:"Upload file , it is required",
+    UPLOAD_FAILED:"Upload failed",
+    UPLOAD_SUCCESS:"File uploaded successfully",
+    RESUMES_FETCHED_SUCCESS:"Resumes fetched successfully",
+    CURRENT_RESUME_NOT_FOUND:"Current resume not found ",
+    CURRENT_RESUME_FETCHED_SUCCESS:"Current resume fetched successfully.",
+    INVALID_RESUME_ID:"Invalid Resume Id",
+    RESUME_NOT_FOUND:"Resume not found",
+    RESUME_FETCHED_SUCCESS:"Resume fetched successfully",
+    RESUME_SET_CURRENT_SUCCESS:"Set Resume as current",
+    CANNOT_DELETE_CURRENT_RESUME:"Cannot delete currently using resume",
+    RESUME_DELETED_SUCCESS:"Resume deleted successfully",
+    ANALYSIS_ALREADY_IN_PROGRESS:"Resume Analysis is already in-progress",
+    ANALYSIS_STARTED_SUCCESS:"Resume Analysis started ",
+    ANALYSIS_NOT_FOUND:"Analysis is not found",
+    ANALYSIS_FETCHED_SUCCESS:"Analsis fetched successfullly",
+    ANALYSIS_HISTORY_FETCHED_SUCCESS:"Analysis history fetched successfully",
+    INVALID_ANALYSIS_ID:"Invalid Analysis id",
+    ANALYSIS_DELETED_SUCCESS:"Analysis deleted successfully"
+}

@@ -1,0 +1,20 @@
+module.exports={
+    STAGES_NOT_FOUND:"No stages are found for this roadmap",
+    INVALID_STAGE_ID:"Stage id is not valid",
+    STAGES_FETCHED_SUCCESSFULLY:"Stages fetched successfully",
+    STAGE_DETAILS_FETCHED_SUCCESSFULLY:"stage details fetched successfully",
+    STAGE_TEMPLATE_NOT_FOUND:"Stage template not found",
+    MISSION_NOT_FOUND:"Mission not found",
+    STAGE_MISSIONS_FETCHED_SUCCESSFULLY:"Stage missions fetched successfully",
+    STAGE_LOCKED:"Stage is locked",
+    MISSION_ALREADY_COMPLETED:"Mission is already completed",
+    INVALID_MISSION_ID:"Mission id is invalid",
+    MISSION_STARTED_SUCCESSFULLY:"Mission started successfully",
+    MISSION_SUBMITTED_SUCCESSFULLY:"Mission submitted successfully",
+    MISSION_PROGRESS_NOT_FOUND:"Mission progress not found",
+    START_MISSION_BEFORE_COMPLETING:"Start the mission before completing it.",
+    MISSION_SKIPPED_SUCCESSFULLY:"Mission skipped successfully",
+    MISSION_PROOF_REVIEWED_SUCCESSFULL:"Mission proof reviewed successfully.",
+    INVALID_MISSION_PROGRESS_ID:"Mission progress id is not valid",
+    MISSION_ALREADY_SUBMITTED:"Mission already exists"
+}

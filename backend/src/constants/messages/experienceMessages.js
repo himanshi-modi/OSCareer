@@ -1,0 +1,17 @@
+module.exports={
+    EXPERIENCE_CREATED_SUCCESS:"Experience added successfully.",
+    START_DATE_CANNOT_BE_IN_FUTURE:"Start date cannot be in the future.",
+    END_DATE_REQUIRED:"End date is required if you are not currently working.",
+    END_DATE_BEFORE_START_DATE:"End date cannot be before the start date.",
+    CURRENT_JOB_CANNOT_HAVE_END_DATE:"Current experience cannot have an end date.",
+    EXPERIENCES_FETCHED_SUCCESS:"Experiences fetched successfully.",
+    NO_EXPERIENCES_FOUND:"No experiences found.",
+    EXPERIENCE_FETCHED_SUCCESS:"Experience fetched successfully.",
+    EXPERIENCE_NOT_FOUND:"Experience not found.",
+    EXPERIENCE_UPDATED_SUCCESS:"Experience updated successfully.",
+    EXPERIENCE_DELETED_SUCCESS:"Experience deleted successfully.",
+    CURRENT_EXPERIENCE_FETCHED_SUCCESS:"Current experience fetched successfully.",
+    CURRENT_EXPERIENCE_NOT_FOUND:"No current experience found.",
+    EXPERIENCE_STATS_FETCHED_SUCCESS:"Experience statistics fetched successfully.",
+    EXPERIENCE_FEATURED_UPDATED_SUCCESS:"Experience featured status updated successfully.",
+}
