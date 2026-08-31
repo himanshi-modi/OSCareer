@@ -2,7 +2,7 @@
 const mongoose = require("mongoose");
 
 const Resume = require("../../models/Resume");
-const ResumeAnalysis = require("../../models/resumeAnalysis");
+const ResumeAnalysis = require("../../models/ResumeAnalysis");
 const AppError = require("../../errors/AppError");
 const RESUME_MESSAGES = require("../../constants/messages/resumeMessages");
 const {
