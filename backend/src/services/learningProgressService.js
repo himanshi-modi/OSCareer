@@ -632,7 +632,7 @@ console.log(
 };
 const getMissionDetails = async (userId, missionId) => {
     console.log(
-        "🔥 GET MISSION DETAILS CALLED:",
+        " GET MISSION DETAILS CALLED:",
         {
             userId,
             missionId,
@@ -692,6 +692,7 @@ const getMissionDetails = async (userId, missionId) => {
     const missionTemplate = await MissionTemplate.findOne({
         _id: missionId
     }).lean();
+    console.log("🔎 MISSION TEMPLATE RESULT:", missionTemplate);
 
     if (!missionTemplate) {
         throw new AppError(
