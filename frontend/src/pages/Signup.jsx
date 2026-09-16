@@ -190,7 +190,7 @@ function Signup() {
             type="button"
             onClick={() => {
               window.location.href =
-                "http://localhost:8080/api/v1/auth/google";
+  `${import.meta.env.VITE_API_URL}/api/v1/auth/google`;
             }}
             className="flex w-full items-center justify-center gap-3 rounded-xl border border-career-border bg-career-surface px-5 py-3.5 text-sm font-medium text-slate-200 transition duration-200 hover:border-slate-600 hover:bg-career-card"
           >
@@ -203,7 +203,7 @@ function Signup() {
             type="button"
             onClick={() => {
               window.location.href =
-                "http://localhost:8080/api/v1/auth/linkedin";
+  `${import.meta.env.VITE_API_URL}/api/v1/auth/linkedin`;
             }}
             className="flex w-full items-center justify-center gap-3 rounded-xl border border-career-border bg-career-surface px-5 py-3.5 text-sm font-medium text-slate-200 transition duration-200 hover:border-slate-600 hover:bg-career-card"
           >
