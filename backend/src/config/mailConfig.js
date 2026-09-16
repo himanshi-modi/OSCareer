@@ -23,5 +23,13 @@ const transporter = nodemailer.createTransport({
     pass: process.env.EMAIL_PASSWORD,
   },
 });
+transporter.verify((error, success) => {
+  if (error) {
+    console.error("❌ SMTP verification failed:", error);
+  } else {
+    console.log("✅ SMTP server is ready");
+  }
+});
+
 
 module.exports = transporter;
