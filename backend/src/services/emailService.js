@@ -5,21 +5,25 @@ const resetPasswordTemplate=require("../templates/resetPasswordTemplate");
 
 const sendVerificationEmail=async(email,verificationToken)=>{
 
-    console.log("📧 Sending verification email to:", email);
+    console.log(" Sending verification email to:", email);
 
     const verificationUrl =
         `${process.env.CLIENT_URL}/verify-email?token=${verificationToken}`;
 
-    console.log("🔗 Verification URL:", verificationUrl);
+    console.log(" Verification URL:", verificationUrl);
     const mailOptions={
         from:process.env.EMAIL_USER,
         to:email,
         subject:"Verify your email",
         html:verifyEmailTemplate(verificationUrl)
     };
-    const result = await transporter.sendMail(mailOptions);
+   console.log("📤 About to call transporter.sendMail()");
 
-    console.log("✅ Email sent:", result.messageId);
+const result = await transporter.sendMail(mailOptions);
+
+console.log("✅ Email sent:", result.messageId);
+
+    console.log("Email sent:", result.messageId);
 
     
 }
