@@ -1,6 +1,7 @@
 require("dotenv").config();
 const dns = require("node:dns");
 dns.setServers(["8.8.8.8", "1.1.1.1"]);
+dns.setDefaultResultOrder("ipv4first");
 dns.lookup("smtp.gmail.com", { all: true }, (err, addresses) => {
     if (err) {
         console.error("GMAIL DNS ERROR:", err);
