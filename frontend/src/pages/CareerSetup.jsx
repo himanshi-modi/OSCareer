@@ -468,10 +468,7 @@ function CareerSetup() {
         mapInternshipPreference(internshipPreference),
 };
 
-      console.log(
-        "Creating career profile:",
-        payload
-      );
+      
 
       await createCareerProfile(payload);
 

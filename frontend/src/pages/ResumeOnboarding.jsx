@@ -56,9 +56,7 @@ function ResumeOnboarding() {
       setResumeId(id);
 
 
-      // -----------------------------
-      // Start AI analysis
-      // -----------------------------
+
 
       console.log(
         "Starting resume analysis..."
@@ -124,9 +122,7 @@ function ResumeOnboarding() {
         );
 
 
-        // -----------------------------
-        // Analysis completed
-        // -----------------------------
+        
 
         if (result.analysis.status === "completed") {
   console.log(
@@ -143,9 +139,7 @@ function ResumeOnboarding() {
 }
 
 
-        // -----------------------------
-        // Analysis failed
-        // -----------------------------
+        
 
         if (
           result.analysis.status ===
@@ -168,8 +162,7 @@ function ResumeOnboarding() {
 
       } catch (error) {
 
-        // 404 can happen before the
-        // analysis record is available.
+        
         console.log(
           "Waiting for analysis...",
           error.response?.data?.message
@@ -178,11 +171,11 @@ function ResumeOnboarding() {
     };
 
 
-    // Check immediately
+   
     checkAnalysisStatus();
 
 
-    // Then check every 2 seconds
+
     intervalId = setInterval(
       checkAnalysisStatus,
       2000
@@ -196,14 +189,11 @@ function ResumeOnboarding() {
   }, [resumeId]);
 
 
-  // --------------------------------------------------
-  // STEP 3: UI
-  // --------------------------------------------------
 
   return (
     <main className="min-h-screen bg-career-bg text-white">
 
-      {/* Header */}
+      
 
       <header className="border-b border-career-border">
 
@@ -223,7 +213,7 @@ function ResumeOnboarding() {
       </header>
 
 
-      {/* Main Content */}
+      
 
       <div
         className={`mx-auto max-w-7xl px-6 py-14 lg:py-20 ${
@@ -233,7 +223,7 @@ function ResumeOnboarding() {
         }`}
       >
 
-        {/* LEFT */}
+        
 
         <section
           className={
@@ -243,7 +233,7 @@ function ResumeOnboarding() {
           }
         >
 
-          {/* Small Heading */}
+          
 
           <p className="text-sm font-semibold uppercase text-center tracking-[0.2em] text-career-blue">
 
@@ -252,7 +242,7 @@ function ResumeOnboarding() {
           </p>
 
 
-          {/* Heading */}
+         
 
           <h1 className="mt-4 text-4xl font-bold text-center tracking-tight sm:text-5xl">
 
@@ -261,7 +251,7 @@ function ResumeOnboarding() {
           </h1>
 
 
-          {/* Description */}
+          
 
           <p className="mt-5 max-w-xl text-center text-base leading-7 text-slate-400 sm:text-lg">
 
@@ -269,9 +259,6 @@ function ResumeOnboarding() {
             and build a roadmap tailored just for you.
 
           </p>
-
-
-          {/* Error */}
 
           {error && (
 
@@ -286,7 +273,7 @@ function ResumeOnboarding() {
           )}
 
 
-          {/* Upload Area */}
+          
 
           <div className="mt-10">
 
@@ -376,7 +363,7 @@ function ResumeOnboarding() {
                 </div>
 
 
-                {/* Current status */}
+                
 
                 {isAnalyzing && (
 
@@ -633,9 +620,6 @@ function ResumeOnboarding() {
 }
 
 
-// --------------------------------------------------
-// Analysis Step
-// --------------------------------------------------
 
 function AnalysisStep({ label, active }) {
 
@@ -678,9 +662,7 @@ function AnalysisStep({ label, active }) {
 }
 
 
-// --------------------------------------------------
-// Score Card
-// --------------------------------------------------
+
 
 function ScoreCard({ label, score }) {
 

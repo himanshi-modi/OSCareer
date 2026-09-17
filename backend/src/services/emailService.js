@@ -1,43 +1,54 @@
-const transporter=require("../config/mailConfig");
-const verifyEmailTemplate=require("../templates/verifyEmailTemplate");
-const resetPasswordTemplate=require("../templates/resetPasswordTemplate");
+const resend = require("../config/mailConfig");
+const verifyEmailTemplate = require("../templates/verifyEmailTemplate");
+const resetPasswordTemplate = require("../templates/resetPasswordTemplate");
 
+const sendVerificationEmail = async (email, verificationToken) => {
+  console.log("Sending verification email to:", email);
 
-const sendVerificationEmail=async(email,verificationToken)=>{
+  const verificationUrl =
+    `${process.env.CLIENT_URL}/verify-email?token=${verificationToken}`;
 
-    console.log(" Sending verification email to:", email);
+  console.log("Verification URL:", verificationUrl);
 
-    const verificationUrl =
-        `${process.env.CLIENT_URL}/verify-email?token=${verificationToken}`;
+  const { data, error } = await resend.emails.send({
+    from: "OSCareer <onboarding@resend.dev>",
+    to: [email],
+    subject: "Verify your email",
+    html: verifyEmailTemplate(verificationUrl),
+  });
 
-    console.log(" Verification URL:", verificationUrl);
-    const mailOptions={
-        from:process.env.EMAIL_USER,
-        to:email,
-        subject:"Verify your email",
-        html:verifyEmailTemplate(verificationUrl)
-    };
-   console.log("📤 About to call transporter.sendMail()");
+  if (error) {
+    console.error("Resend email error:", error);
+    throw new Error(`Failed to send verification email: ${error.message}`);
+  }
 
-const result = await transporter.sendMail(mailOptions);
+  console.log(" Verification email sent:", data.id);
 
-console.log("✅ Email sent:", result.messageId);
+  return data;
+};
 
-    console.log("Email sent:", result.messageId);
+const sendPasswordResetEmail = async (email, resetToken) => {
+  const passwordResetUrl =
+    `${process.env.CLIENT_URL}/reset-password?token=${resetToken}`;
 
-    
-}
+  const { data, error } = await resend.emails.send({
+    from: "OSCareer <onboarding@resend.dev>",
+    to: [email],
+    subject: "Reset your password",
+    html: resetPasswordTemplate(passwordResetUrl),
+  });
 
-const sendPasswordResetEmail=async(email,resetToken)=>{
-    const passwordResetUrl =`${process.env.CLIENT_URL}/reset-password?token=${resetToken}`;
-    const mailOptions={
-        from:process.env.EMAIL_USER,
-        to:email,
-        subject:"Reset your password",
-        html:resetPasswordTemplate(passwordResetUrl)
-    };
-    await transporter.sendMail(mailOptions);
-}
+  if (error) {
+    console.error(" Resend password reset error:", error);
+    throw new Error(`Failed to send password reset email: ${error.message}`);
+  }
 
+  console.log("✅ Password reset email sent:", data.id);
 
-module.exports={sendVerificationEmail,sendPasswordResetEmail};
+  return data;
+};
+
+module.exports = {
+  sendVerificationEmail,
+  sendPasswordResetEmail,
+};

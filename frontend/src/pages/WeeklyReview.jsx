@@ -50,9 +50,6 @@ function WeeklyReview() {
     loadWeeklyReview();
   }, []);
 
-  // ============================================================
-  // LOAD WEEKLY REVIEW
-  // ============================================================
 
   const loadWeeklyReview = async () => {
     try {
@@ -258,9 +255,6 @@ function WeeklyReview() {
     }
   };
 
-  // ============================================================
-  // LOADING
-  // ============================================================
 
   if (loading) {
     return (
@@ -330,9 +324,7 @@ function WeeklyReview() {
     );
   }
 
-  // ============================================================
-  // ERROR
-  // ============================================================
+
 
   if (error) {
     return (
@@ -429,9 +421,6 @@ function WeeklyReview() {
     );
   }
 
-  // ============================================================
-  // CALCULATIONS
-  // ============================================================
 
   const currentReadiness =
     review?.readinessScore ?? null;
@@ -464,9 +453,6 @@ function WeeklyReview() {
   const totalMissions =
     review?.totalMissions ?? 0;
 
-  // ============================================================
-  // MISSION HELPERS
-  // ============================================================
 
   const getMissionId = (mission) =>
     mission?._id ||
@@ -485,10 +471,7 @@ function WeeklyReview() {
     mission?.mission?.description ||
     "";
 
-  // ============================================================
-  // RENDER
-  // ============================================================
-
+  
   return (
     <div className="min-h-screen bg-career-bg text-white">
 
@@ -501,9 +484,6 @@ function WeeklyReview() {
 
       <div className="lg:pl-64">
 
-        {/* ================================================== */}
-        {/* HEADER */}
-        {/* ================================================== */}
 
         <header className="sticky top-0 z-30 border-b border-career-border bg-career-bg/90 backdrop-blur">
 
@@ -550,9 +530,6 @@ function WeeklyReview() {
 
         <main className="mx-auto max-w-6xl px-5 py-8 sm:px-8 lg:py-10">
 
-          {/* ================================================== */}
-          {/* WEEK */}
-          {/* ================================================== */}
 
           <section className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
@@ -590,9 +567,6 @@ function WeeklyReview() {
 
           </section>
 
-          {/* ================================================== */}
-          {/* WEEKLY SUMMARY */}
-          {/* ================================================== */}
 
           <section className="mt-10">
 
@@ -646,9 +620,6 @@ function WeeklyReview() {
 
           </section>
 
-          {/* ================================================== */}
-          {/* ACHIEVEMENTS */}
-          {/* ================================================== */}
 
           <section className="mt-10">
 
@@ -716,9 +687,6 @@ function WeeklyReview() {
 
           </section>
 
-          {/* ================================================== */}
-          {/* PROGRESS BREAKDOWN */}
-          {/* ================================================== */}
 
           <section className="mt-10">
 
@@ -789,9 +757,6 @@ function WeeklyReview() {
 
           </section>
 
-          {/* ================================================== */}
-          {/* AI INSIGHTS */}
-          {/* ================================================== */}
 
           <section className="mt-10">
 
@@ -848,9 +813,6 @@ function WeeklyReview() {
 
           </section>
 
-          {/* ================================================== */}
-          {/* NEXT WEEK PLAN */}
-          {/* ================================================== */}
 
           <section className="mt-10">
 
@@ -997,9 +959,6 @@ function WeeklyReview() {
 
           </section>
 
-          {/* ================================================== */}
-          {/* MOTIVATION */}
-          {/* ================================================== */}
 
           <section className="mt-10">
 
@@ -1048,10 +1007,6 @@ function WeeklyReview() {
 
           </section>
 
-          {/* ================================================== */}
-          {/* CTA */}
-          {/* ================================================== */}
-
           <div className="mt-10 flex justify-center">
 
             <Link
@@ -1074,9 +1029,6 @@ function WeeklyReview() {
   );
 }
 
-/* ============================================================
-   HELPERS
-============================================================ */
 
 function formatReviewDate(date) {
   if (!date) return "—";
@@ -1091,9 +1043,6 @@ function formatReviewDate(date) {
   );
 }
 
-/* ============================================================
-   SECTION HEADING
-============================================================ */
 
 function SectionHeading({
   icon,
@@ -1114,9 +1063,6 @@ function SectionHeading({
   );
 }
 
-/* ============================================================
-   STAT CARD
-============================================================ */
 
 function StatCard({
   icon,
@@ -1153,9 +1099,7 @@ function StatCard({
   );
 }
 
-/* ============================================================
-   ACHIEVEMENT
-============================================================ */
+
 
 function Achievement({ text }) {
   return (
@@ -1178,9 +1122,7 @@ function Achievement({ text }) {
   );
 }
 
-/* ============================================================
-   METRIC CARD
-============================================================ */
+
 
 function MetricCard({
   icon,
@@ -1208,9 +1150,6 @@ function MetricCard({
   );
 }
 
-/* ============================================================
-   INSIGHT CARD
-============================================================ */
 
 function InsightCard({
   icon,

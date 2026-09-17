@@ -479,9 +479,6 @@ function Settings() {
       setNotificationActionLoading("");
     }
   };
-
-  
-
   const handleMarkAllNotificationsAsRead =
     async () => {
       if (unreadCount === 0) {

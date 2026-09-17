@@ -34,19 +34,14 @@ import MissionCard from "../components/MissionCard";
 function Roadmap() {
   const navigate = useNavigate();
 
-  // ==========================================================
-  // ROADMAP STATE
-  // ==========================================================
-
+  
   const [roadmap, setRoadmap] = useState(null);
   const [careerProfile, setCareerProfile] = useState(null);
   const [userStages, setUserStages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // ==========================================================
-  // REGENERATE ROADMAP STATE
-  // ==========================================================
+
 
   const [showRegenerateModal, setShowRegenerateModal] =
     useState(false);
@@ -59,9 +54,6 @@ function Roadmap() {
   const [regenerationError, setRegenerationError] =
     useState("");
 
-  // ==========================================================
-  // SKIP MISSION STATE
-  // ==========================================================
 
   const [missionToSkip, setMissionToSkip] = useState(null);
 
@@ -73,9 +65,7 @@ function Roadmap() {
 
   const [skipError, setSkipError] = useState("");
 
-  // ==========================================================
-  // FORMAT HELPERS
-  // ==========================================================
+
 
   const formatTimeline = (value) => {
     if (!value) {
@@ -118,9 +108,6 @@ function Roadmap() {
     return `${value} Hours / Day`;
   };
 
-  // ==========================================================
-  // MISSION HELPERS
-  // ==========================================================
 
   const getMissionsFromStage = (stage) => {
     return (
@@ -136,9 +123,7 @@ function Roadmap() {
     return mission?.missionId;
   };
 
-  // ==========================================================
-  // STAGE HELPERS
-  // ==========================================================
+
 
   const isStageCompleted = (stage) => {
     return stage?.status === "completed";
@@ -159,25 +144,13 @@ function Roadmap() {
     );
   };
 
-  // ==========================================================
-  // FETCH STAGES + MISSIONS
-  // ==========================================================
+  
 
   const fetchStagesWithMissions = async () => {
-    console.log("🔥 BEFORE getUserStages");
-
+    
     const stagesResponse = await getUserStages();
 
-    console.log("🟢 getUserStages FINISHED");
-    console.log("🟢 stagesResponse:", stagesResponse);
-    console.log(
-      "🟢 stagesResponse.stages:",
-      stagesResponse?.stages
-    );
-    console.log(
-      "🟢 stagesResponse.data:",
-      stagesResponse?.data
-    );
+    
 
     const stagesData =
       stagesResponse?.data?.stages ||
@@ -185,17 +158,12 @@ function Roadmap() {
       stagesResponse?.stages ||
       [];
 
-    console.log("🟡 stagesData:", stagesData);
-    console.log(
-      "🟡 stagesData.length:",
-      stagesData.length
-    );
+    
 
-    console.log("🔵 ABOUT TO MAP STAGES");
-
+   
     const stagesWithMissions = await Promise.all(
       stagesData.map(async (stage) => {
-        console.log("🔥 PROCESSING STAGE:", stage);
+        console.log("PROCESSING STAGE:", stage);
 
         console.log("STAGE ID CHECK:", {
           stageOrder: stage.stageOrder,
@@ -206,7 +174,7 @@ function Roadmap() {
 
         if (!stage.stageId) {
           console.error(
-            "❌ NO stageId FOUND FOR STAGE:",
+            "NO stageId FOUND FOR STAGE:",
             stage
           );
 
@@ -216,20 +184,13 @@ function Roadmap() {
           };
         }
 
-        console.log(
-          "🔴 ABOUT TO CALL getStageMissions"
-        );
-
-        console.log(
-          "🔴 stage.stageId =",
-          stage.stageId
-        );
+        
 
         const missionsResponse =
           await getStageMissions(stage.stageId);
 
         console.log(
-          `🔥 MISSIONS RESPONSE FOR STAGE ${stage.stageOrder}:`,
+          `MISSIONS RESPONSE FOR STAGE ${stage.stageOrder}:`,
           missionsResponse
         );
 
@@ -247,26 +208,19 @@ function Roadmap() {
     );
 
     console.log(
-      "🔥 FINAL STAGES WITH MISSIONS:",
+      "FINAL STAGES WITH MISSIONS:",
       stagesWithMissions
     );
 
     return stagesWithMissions;
   };
 
-  // ==========================================================
-  // FETCH ROADMAP
-  // ==========================================================
 
   useEffect(() => {
     const fetchRoadmap = async () => {
       try {
         setLoading(true);
         setError("");
-
-        // ------------------------------------------------------
-        // ACTIVE ROADMAP
-        // ------------------------------------------------------
 
         const roadmapResponse =
           await getActiveRoadmap();
@@ -285,10 +239,7 @@ function Roadmap() {
           );
         }
 
-        // ------------------------------------------------------
-        // ROADMAP DETAILS
-        // ------------------------------------------------------
-
+        
         const detailsResponse =
           await getRoadmapDetails(roadmapId);
 
@@ -297,20 +248,13 @@ function Roadmap() {
           detailsResponse
         );
 
-        // ------------------------------------------------------
-        // USER STAGES + MISSIONS
-        // ------------------------------------------------------
-
+       
         const stagesWithMissions =
           await fetchStagesWithMissions();
 
         setUserStages(stagesWithMissions);
 
-        // ------------------------------------------------------
-        // CAREER PROFILE
-        // ------------------------------------------------------
-
-        const profileResponse =
+        
           await getCareerProfile();
 
         const profileData =
@@ -323,9 +267,7 @@ function Roadmap() {
           );
         }
 
-        // ------------------------------------------------------
-        // FINAL ROADMAP
-        // ------------------------------------------------------
+        
 
         const roadmapData =
           detailsResponse?.data;
@@ -366,9 +308,7 @@ function Roadmap() {
     fetchRoadmap();
   }, []);
 
-  // ==========================================================
-  // REGENERATE ROADMAP
-  // ==========================================================
+  
 
   const handleRegenerateRoadmap = async () => {
     try {
@@ -405,9 +345,7 @@ function Roadmap() {
         );
       }
 
-      // ------------------------------------------------------
-      // GET NEW ROADMAP DETAILS
-      // ------------------------------------------------------
+      
 
       const detailsResponse =
         await getRoadmapDetails(
@@ -418,19 +356,13 @@ function Roadmap() {
         detailsResponse?.data
       );
 
-      // ------------------------------------------------------
-      // REFRESH USER STAGES + MISSIONS
-      // ------------------------------------------------------
-
+      
       const stagesWithMissions =
         await fetchStagesWithMissions();
 
       setUserStages(stagesWithMissions);
 
-      // ------------------------------------------------------
-      // CLOSE MODAL
-      // ------------------------------------------------------
-
+      
       setShowRegenerateModal(false);
       setRegenerationReason("");
     } catch (error) {
@@ -449,10 +381,7 @@ function Roadmap() {
     }
   };
 
-  // ==========================================================
-  // START MISSION
-  // ==========================================================
-
+  
   const handleStartMission = (mission) => {
     console.log(
       "🔥 COMPLETE MISSION OBJECT:",
@@ -484,14 +413,9 @@ function Roadmap() {
       `/learning-progress/missions/${missionId}`
     );
   };
-
-  // ==========================================================
-  // OPEN SKIP MISSION MODAL
-  // ==========================================================
-
   const handleSkipMission = (mission) => {
     console.log(
-      "⏭️ SKIP MISSION:",
+      "SKIP MISSION:",
       mission
     );
 
@@ -500,7 +424,7 @@ function Roadmap() {
 
     if (!missionId) {
       console.warn(
-        "❌ Mission ID not found:",
+        "Mission ID not found:",
         mission
       );
       return;
@@ -512,9 +436,6 @@ function Roadmap() {
     setShowSkipModal(true);
   };
 
-  // ==========================================================
-  // CONFIRM SKIP MISSION
-  // ==========================================================
 
   const handleConfirmSkipMission = async () => {
     const missionId =
@@ -538,27 +459,13 @@ function Roadmap() {
       setSkippingMission(true);
       setSkipError("");
 
-      console.log(
-        "⏭️ Calling skipMission:",
-        {
-          missionId,
-          reason: skipReason,
-        }
-      );
-
+      
       await skipMission(
         missionId,
         skipReason.trim()
       );
 
-      console.log(
-        "✅ Mission skipped successfully"
-      );
-
-      // ------------------------------------------------------
-      // UPDATE UI IMMEDIATELY
-      // ------------------------------------------------------
-
+      
       setUserStages((previousStages) =>
         previousStages.map((stage) => ({
           ...stage,
@@ -581,16 +488,14 @@ function Roadmap() {
         }))
       );
 
-      // ------------------------------------------------------
-      // CLOSE MODAL
-      // ------------------------------------------------------
+      
 
       setShowSkipModal(false);
       setMissionToSkip(null);
       setSkipReason("");
     } catch (error) {
       console.error(
-        "❌ Skip mission error:",
+        " Skip mission error:",
         error
       );
 
@@ -609,9 +514,7 @@ function Roadmap() {
     }
   };
 
-  // ==========================================================
-  // LOADING
-  // ==========================================================
+  
 
   if (loading) {
     return (
@@ -627,10 +530,7 @@ function Roadmap() {
     );
   }
 
-  // ==========================================================
-  // ERROR
-  // ==========================================================
-
+  
   if (error) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-career-bg px-6 text-white">
@@ -651,9 +551,7 @@ function Roadmap() {
     );
   }
 
-  // ==========================================================
-  // NO ROADMAP
-  // ==========================================================
+  
 
   if (!roadmap) {
     return (
@@ -680,9 +578,7 @@ function Roadmap() {
     );
   }
 
-  // ==========================================================
-  // ROADMAP VALUES
-  // ==========================================================
+  
 
   const overallProgress =
     Number(roadmap?.progress) || 0;
@@ -707,17 +603,11 @@ function Roadmap() {
         stage.status === "not-started"
     );
 
-  // ==========================================================
-  // RENDER
-  // ==========================================================
 
   return (
     <div className="min-h-screen bg-career-bg text-white">
 
-      {/* =====================================================
-          TOP NAV
-      ===================================================== */}
-
+     
       <header className="border-b border-career-border">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
 
@@ -743,16 +633,11 @@ function Roadmap() {
         </div>
       </header>
 
-      {/* =====================================================
-          MAIN
-      ===================================================== */}
+      
 
       <main className="mx-auto max-w-5xl px-6 py-10">
 
-        {/* ===================================================
-            PAGE HEADER
-        =================================================== */}
-
+       
         <div className="flex items-center gap-3">
           <Map
             size={24}
@@ -768,9 +653,7 @@ function Roadmap() {
           Your personalized path toward your career goal.
         </p>
 
-        {/* ===================================================
-            GOAL
-        =================================================== */}
+       
 
         <section className="mt-8 border-b border-career-border pb-8">
 
@@ -828,9 +711,7 @@ function Roadmap() {
 
         </section>
 
-        {/* ===================================================
-            OVERALL PROGRESS
-        =================================================== */}
+      
 
         <section className="border-b border-career-border py-8">
 
@@ -865,10 +746,7 @@ function Roadmap() {
 
         </section>
 
-        {/* ===================================================
-            STAGES
-        =================================================== */}
-
+        
         <section className="mt-10">
 
           {stages.map((stage, stageIndex) => {
@@ -923,9 +801,7 @@ function Roadmap() {
                 className="border-b border-career-border py-8 first:pt-0"
               >
 
-                {/* =================================================
-                    STAGE HEADER
-                ================================================= */}
+                
 
                 <div className="flex items-start justify-between gap-5">
 
@@ -1011,9 +887,7 @@ function Roadmap() {
 
                 </div>
 
-                {/* =================================================
-                    LOCKED
-                ================================================= */}
+              
 
                 {locked && (
                   <div className="mt-6 ml-8 rounded-2xl border border-career-border bg-career-surface/50 p-5">
@@ -1042,9 +916,7 @@ function Roadmap() {
                   </div>
                 )}
 
-                {/* =================================================
-                    COMPLETED STAGE
-                ================================================= */}
+                
 
                 {completed && (
                   <div className="mt-6 ml-8">
@@ -1115,10 +987,7 @@ function Roadmap() {
                   </div>
                 )}
 
-                {/* =================================================
-                    CURRENT STAGE
-                ================================================= */}
-
+                
                 {current && (
                   <div className="mt-6 ml-8">
 
@@ -1151,9 +1020,7 @@ function Roadmap() {
 
                     </div>
 
-                    {/* =================================================
-                        MISSIONS
-                    ================================================= */}
+                   
 
                     <div>
 
@@ -1229,9 +1096,7 @@ function Roadmap() {
                   </div>
                 )}
 
-                {/* =================================================
-                    SKIPPED STAGE
-                ================================================= */}
+              
 
                 {skipped && (
                   <div className="mt-5 ml-8 text-sm text-slate-500">
@@ -1246,9 +1111,7 @@ function Roadmap() {
 
         </section>
 
-        {/* ===================================================
-            CONTINUE MESSAGE
-        =================================================== */}
+        
 
         {currentStage &&
           stages.length > 0 && (
@@ -1287,9 +1150,7 @@ function Roadmap() {
             </section>
           )}
 
-        {/* ===================================================
-            BOTTOM ACTIONS
-        =================================================== */}
+        
 
         <section className="mt-10 border-t border-career-border pt-8">
 
@@ -1325,10 +1186,7 @@ function Roadmap() {
 
       </main>
 
-      {/* =====================================================
-          REGENERATE MODAL
-      ===================================================== */}
-
+      
       {showRegenerateModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-6">
 
@@ -1450,9 +1308,8 @@ function Roadmap() {
         </div>
       )}
 
-      {/* =====================================================
-          SKIP MISSION MODAL
-      ===================================================== */}
+     
+     
 
       {showSkipModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-6">

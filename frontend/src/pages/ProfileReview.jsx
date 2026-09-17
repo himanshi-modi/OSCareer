@@ -32,9 +32,6 @@ function ProfileReview() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // --------------------------------------------------
-  // Fetch Resume Analysis
-  // --------------------------------------------------
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -82,17 +79,10 @@ function ProfileReview() {
 
     if (resumeId) {
       loadProfile();
-    }if (resumeId) {
-  loadProfile();
-} else {
-  setError("Resume ID is missing.");
-  setLoading(false);
-}
+    }
   }, [resumeId]);
 
-  // --------------------------------------------------
-  // Delete Skill
-  // --------------------------------------------------
+
 
   const removeSkill = (skillId) => {
     setProfile((prev) => ({
@@ -103,9 +93,6 @@ function ProfileReview() {
     }));
   };
 
-  // --------------------------------------------------
-  // Delete Project
-  // --------------------------------------------------
 
   const removeProject = (projectId) => {
     setProfile((prev) => ({
@@ -116,9 +103,7 @@ function ProfileReview() {
     }));
   };
 
-  // --------------------------------------------------
-  // Delete Education
-  // --------------------------------------------------
+
 
   const removeEducation = (educationId) => {
     setProfile((prev) => ({
@@ -129,9 +114,7 @@ function ProfileReview() {
     }));
   };
 
-  // --------------------------------------------------
-  // Delete Experience
-  // --------------------------------------------------
+
 
   const removeExperience = (experienceId) => {
     setProfile((prev) => ({
@@ -142,9 +125,7 @@ function ProfileReview() {
     }));
   };
 
-  // --------------------------------------------------
-  // Continue
-  // --------------------------------------------------
+ 
 
   const handleContinue = () => {
     console.log(
@@ -155,9 +136,6 @@ function ProfileReview() {
     navigate("/career-setup");
   };
 
-  // --------------------------------------------------
-  // Loading
-  // --------------------------------------------------
 
   if (loading) {
     return (
@@ -176,9 +154,7 @@ function ProfileReview() {
     );
   }
 
-  // --------------------------------------------------
-  // Error
-  // --------------------------------------------------
+
 
   if (error) {
     return (
@@ -218,9 +194,6 @@ function ProfileReview() {
     );
   }
 
-  // --------------------------------------------------
-  // UI
-  // --------------------------------------------------
 
   return (
     <main className="min-h-screen bg-career-bg text-white">
@@ -228,9 +201,6 @@ function ProfileReview() {
 
       <div className="mx-auto max-w-6xl px-6 py-12 lg:py-16">
 
-        {/* ------------------------------------------------ */}
-        {/* Header */}
-        {/* ------------------------------------------------ */}
 
         <section className="max-w-3xl">
 
@@ -254,9 +224,7 @@ function ProfileReview() {
         </section>
 
 
-        {/* ------------------------------------------------ */}
-        {/* Profile Content */}
-        {/* ------------------------------------------------ */}
+        
 
         <div className="mt-12 space-y-8">
 
@@ -459,9 +427,7 @@ function ProfileReview() {
         </div>
 
 
-        {/* ------------------------------------------------ */}
-        {/* Bottom Action */}
-        {/* ------------------------------------------------ */}
+       
 
         <div className="mt-12 flex flex-col items-center justify-between gap-5 border-t border-career-border pt-8 sm:flex-row">
 
@@ -501,9 +467,7 @@ function ProfileReview() {
 }
 
 
-// ==================================================
-// Header
-// ==================================================
+
 
 function Header() {
   return (
@@ -523,9 +487,6 @@ function Header() {
 }
 
 
-// ==================================================
-// Profile Section
-// ==================================================
 
 function ProfileSection({
   icon,
@@ -563,9 +524,6 @@ function ProfileSection({
 }
 
 
-// ==================================================
-// Project Card
-// ==================================================
 
 function ProjectCard({ project, onDelete }) {
   return (
@@ -633,9 +591,7 @@ function ProjectCard({ project, onDelete }) {
 }
 
 
-// ==================================================
-// Experience Card
-// ==================================================
+
 
 function ExperienceCard({ experience, onDelete }) {
   return (
@@ -674,9 +630,6 @@ function ExperienceCard({ experience, onDelete }) {
 }
 
 
-// ==================================================
-// Education Card
-// ==================================================
 
 function EducationCard({ education, onDelete }) {
   return (
@@ -726,9 +679,7 @@ function EducationCard({ education, onDelete }) {
 }
 
 
-// ==================================================
-// Empty State
-// ==================================================
+
 
 function EmptyState({ text }) {
   return (
@@ -739,9 +690,7 @@ function EmptyState({ text }) {
 }
 
 
-// ==================================================
-// Add Button
-// ==================================================
+
 
 function AddButton({ label }) {
   return (
@@ -757,9 +706,7 @@ function AddButton({ label }) {
 }
 
 
-// ==================================================
-// Date Formatter
-// ==================================================
+
 
 function formatDate(date) {
   if (!date) return "";

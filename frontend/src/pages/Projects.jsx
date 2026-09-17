@@ -20,26 +20,21 @@ import {
   ChevronRight,
 } from "lucide-react";
 
-// ─────────────────────────────────────────────
-// MAIN COMPONENT
-// ─────────────────────────────────────────────
+
 
 export default function Projects() {
   const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState("all");
 
-  // Resume projects now come from ResumeAnalysis API
+  
   const [resumeProjects, setResumeProjects] = useState([]);
   const [loadingResumeProjects, setLoadingResumeProjects] = useState(true);
 
-  // CareerOS projects now come from Learning Progress API
   const [careerOSProjects, setCareerOSProjects] = useState([]);
   const [loadingCareerOSProjects, setLoadingCareerOSProjects] = useState(true);
 
-  // ─────────────────────────────────────────────
-  // FETCH RESUME PROJECTS
-  // ─────────────────────────────────────────────
+  
 
   useEffect(() => {
     const fetchResumeProjects = async () => {
@@ -57,9 +52,7 @@ export default function Projects() {
     fetchResumeProjects();
   }, []);
 
-  // ─────────────────────────────────────────────
-  // FETCH CAREEROS PROJECTS
-  // ─────────────────────────────────────────────
+ 
 
   useEffect(() => {
     const fetchCareerOSProjects = async () => {
@@ -77,10 +70,7 @@ export default function Projects() {
     fetchCareerOSProjects();
   }, []);
 
-  // ─────────────────────────────────────────────
-  // STATS
-  // ─────────────────────────────────────────────
-
+  
   const totalProjects =
     resumeProjects.length + careerOSProjects.length;
 
@@ -92,10 +82,7 @@ export default function Projects() {
     (project) => project.progress === 100
   ).length;
 
-  // ─────────────────────────────────────────────
-  // HANDLERS
-  // ─────────────────────────────────────────────
-
+ 
   const handleResumeProject = (projectId) => {
   navigate(`/projects/${projectId}`);
 };
@@ -376,9 +363,7 @@ export default function Projects() {
   );
 }
 
-// ─────────────────────────────────────────────
-// STAT CARD
-// ─────────────────────────────────────────────
+
 
 function StatCard({ icon, value, label }) {
   return (
@@ -404,9 +389,7 @@ function StatCard({ icon, value, label }) {
   );
 }
 
-// ─────────────────────────────────────────────
-// TAB BUTTON
-// ─────────────────────────────────────────────
+
 
 function TabButton({ active, onClick, children }) {
   return (
@@ -428,10 +411,6 @@ function TabButton({ active, onClick, children }) {
     </button>
   );
 }
-
-// ─────────────────────────────────────────────
-// SECTION HEADER
-// ─────────────────────────────────────────────
 
 function SectionHeader({
   icon,
@@ -483,9 +462,6 @@ function SectionHeader({
   );
 }
 
-// ─────────────────────────────────────────────
-// RESUME PROJECT CARD
-// ─────────────────────────────────────────────
 
 function ResumeProjectCard({ project, onClick }) {
   return (
@@ -571,9 +547,7 @@ function ResumeProjectCard({ project, onClick }) {
   );
 }
 
-// ─────────────────────────────────────────────
-// CAREEROS PROJECT CARD
-// ─────────────────────────────────────────────
+
 
 function CareerProjectCard({ project, onClick }) {
 
@@ -755,9 +729,7 @@ function CareerProjectCard({ project, onClick }) {
   );
 }
 
-// ─────────────────────────────────────────────
-// STATUS BADGE
-// ─────────────────────────────────────────────
+
 
 function StatusBadge({ status }) {
 

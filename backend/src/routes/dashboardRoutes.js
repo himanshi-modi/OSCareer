@@ -5,6 +5,7 @@ const protect = require("../middlewares/authMiddleware");
 const dashboardController = require("../controllers/dashboardController");
 const validate = require("../middlewares/validateMiddleware");
 const {publicProfileParamsSchema,analyticsQuerySchema}=require("../../../shared/validators/dashboardValidator");
+
 router.get("/",protect,dashboardController.getDashboard);
 router.get("/profile",protect,dashboardController.getProfileOverview);
 router.get("/stats",protect,dashboardController.getDashboardStats);

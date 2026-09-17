@@ -63,28 +63,8 @@ function Dashboard() {
         setError("");
 
 
-        /*
-         * =====================================================
-         * 1. LOAD MAIN DASHBOARD
-         * =====================================================
-         */
-
+       
         const dashboardResponse = await getDashboard();
-
-        console.log(
-          "🔥 DASHBOARD RESPONSE:",
-          dashboardResponse
-        );
-
-        console.log(
-          "🔥 DASHBOARD DATA:",
-          dashboardResponse.data
-        );
-
-        console.log(
-          "🔥 DASHBOARD PAYLOAD:",
-          dashboardResponse.data.data
-        );
 
 
         setDashboard(
@@ -92,46 +72,25 @@ function Dashboard() {
         );
 
 
-        /*
-         * =====================================================
-         * 2. EVALUATE ACHIEVEMENTS
-         * =====================================================
-         *
-         * This checks the user's current progress and
-         * unlocks any new achievements.
-         *
-         */
+       
 
         try {
 
           const evaluateResponse =
             await evaluateAchievements();
 
-          console.log(
-            "🏆 ACHIEVEMENTS EVALUATED:",
-            evaluateResponse.data
-          );
+          
 
         } catch (achievementError) {
 
-          /*
-           * Achievement evaluation should NOT prevent
-           * the main dashboard from loading.
-           */
+          
 
           console.error(
-            "⚠️ ACHIEVEMENT EVALUATION ERROR:",
+            " ACHIEVEMENT EVALUATION ERROR:",
             achievementError
           );
 
         }
-
-
-        /*
-         * =====================================================
-         * 3. GET RECENT ACHIEVEMENTS
-         * =====================================================
-         */
 
         try {
 
@@ -140,10 +99,7 @@ function Dashboard() {
               limit: 5,
             });
 
-          console.log(
-            "🏆 RECENT ACHIEVEMENTS:",
-            recentResponse.data
-          );
+          
 
 
           setAchievements(
@@ -152,31 +108,21 @@ function Dashboard() {
 
         } catch (achievementError) {
 
-          console.error(
-            "⚠️ RECENT ACHIEVEMENTS ERROR:",
-            achievementError
-          );
+          
 
           setAchievements([]);
 
         }
 
 
-        /*
-         * =====================================================
-         * 4. GET ACHIEVEMENT STATS
-         * =====================================================
-         */
+       
 
         try {
 
           const statsResponse =
             await getAchievementStats();
 
-          console.log(
-            "📊 ACHIEVEMENT STATS:",
-            statsResponse.data
-          );
+          
 
 
           setAchievementStats(
@@ -197,17 +143,17 @@ function Dashboard() {
       } catch (error) {
 
         console.error(
-          "❌ DASHBOARD ERROR:",
+          "DASHBOARD ERROR:",
           error
         );
 
         console.error(
-          "❌ STATUS:",
+          " STATUS:",
           error.response?.status
         );
 
         console.error(
-          "❌ ERROR DATA:",
+          "ERROR DATA:",
           error.response?.data
         );
 
@@ -231,11 +177,7 @@ function Dashboard() {
   }, []);
 
 
-  /*
-   * =========================================================
-   * LOADING
-   * =========================================================
-   */
+  
 
   if (loading) {
 
@@ -252,11 +194,7 @@ function Dashboard() {
   }
 
 
-  /*
-   * =========================================================
-   * ERROR
-   * =========================================================
-   */
+  
 
   if (error) {
 
@@ -278,11 +216,7 @@ function Dashboard() {
   }
 
 
-  /*
-   * =========================================================
-   * DASHBOARD DATA
-   * =========================================================
-   */
+  
 
   const readiness =
     dashboard.readiness?.currentReadiness ?? 0;
@@ -294,11 +228,7 @@ function Dashboard() {
     dashboard.weeklyReview;
 
 
-  /*
-   * =========================================================
-   * ACHIEVEMENT DATA
-   * =========================================================
-   */
+  
 
   const totalAchievements =
     achievementStats?.totalAchievements ?? 0;
@@ -318,39 +248,20 @@ function Dashboard() {
       />
 
 
-      {/* =====================================================
-          MAIN CONTENT
-      ====================================================== */}
 
       <div className="lg:pl-64">
-
-
-        {/* ===================================================
-            HEADER
-        ==================================================== */}
-
         <header className="sticky top-0 z-30 border-b border-career-border bg-career-bg/90 backdrop-blur">
-
           <div className="flex h-20 items-center justify-between px-5 sm:px-8">
-
-
             <div className="flex items-center gap-4">
-
               <button
                 type="button"
                 onClick={() => setSidebarOpen(true)}
                 className="rounded-xl border border-career-border bg-career-surface p-2.5 text-slate-400 transition hover:text-white lg:hidden"
               >
-
                 <Menu size={19} />
-
               </button>
-
-
               <div>
-
                 <p className="text-sm text-slate-500">
-
                   {new Date().toLocaleDateString(
                     "en-US",
                     {
@@ -427,10 +338,7 @@ function Dashboard() {
         <main className="mx-auto max-w-7xl px-5 py-8 sm:px-8 lg:py-10">
 
 
-          {/* =====================================================
-              TODAY'S MISSION
-          ====================================================== */}
-
+          
           <section>
 
             <div className="mb-4 flex items-center gap-2">
@@ -573,9 +481,7 @@ function Dashboard() {
 
 
 
-          {/* =====================================================
-              DAILY INSIGHT
-          ====================================================== */}
+          
 
           <section className="mt-6">
 
@@ -633,14 +539,11 @@ function Dashboard() {
 
 
 
-          {/* =====================================================
-              MILESTONE + READINESS
-          ====================================================== */}
-
+          
           <section className="mt-6 grid gap-6 lg:grid-cols-2">
 
 
-            {/* NEXT MILESTONE */}
+          
 
             <div className="rounded-3xl border border-career-border bg-career-surface p-6">
 
@@ -749,8 +652,7 @@ function Dashboard() {
 
 
 
-            {/* CAREER READINESS */}
-
+           
             <div className="rounded-3xl border border-career-border bg-career-surface p-6">
 
               <div className="flex items-center gap-2">
@@ -834,9 +736,7 @@ function Dashboard() {
 
 
 
-          {/* =====================================================
-              QUICK ACTIONS
-          ====================================================== */}
+          
 
           <section className="mt-8">
 
@@ -888,9 +788,7 @@ function Dashboard() {
 
 
 
-          {/* =====================================================
-              WEEKLY SNAPSHOT
-          ====================================================== */}
+          
 
           <section className="mt-8">
 
@@ -957,10 +855,7 @@ function Dashboard() {
 
 
 
-          {/* =====================================================
-              AI CAREER GUIDANCE
-          ====================================================== */}
-
+          
           <section className="mt-8">
 
             <div className="mb-4 flex items-center gap-2">
@@ -1129,9 +1024,7 @@ function Dashboard() {
 
 
 
-          {/* =====================================================
-              ACHIEVEMENTS
-          ====================================================== */}
+          
 
           <section className="mt-8">
 
@@ -1159,10 +1052,7 @@ function Dashboard() {
             <div className="grid gap-6 lg:grid-cols-3">
 
 
-              {/* =================================================
-                  ACHIEVEMENT SUMMARY
-              ================================================== */}
-
+              
               <div className="rounded-3xl border border-career-border bg-career-surface p-6">
 
                 <div className="flex items-center gap-3">
@@ -1231,12 +1121,6 @@ function Dashboard() {
                 </div>
 
               </div>
-
-
-
-              {/* =================================================
-                  RECENT ACHIEVEMENTS
-              ================================================== */}
 
               <div className="lg:col-span-2 rounded-3xl border border-career-border bg-career-surface p-6">
 
@@ -1310,14 +1194,11 @@ function Dashboard() {
 
 
 
-          {/* =====================================================
-              RESUME / ROADMAP MINI STATUS
-          ====================================================== */}
-
+          
           <section className="mt-8 grid gap-6 lg:grid-cols-2">
 
 
-            {/* RESUME */}
+            
 
             <div className="rounded-3xl border border-career-border bg-career-surface p-6">
 
@@ -1426,9 +1307,6 @@ function Dashboard() {
 
             </div>
 
-
-
-            {/* ROADMAP */}
 
             <div className="rounded-3xl border border-career-border bg-career-surface p-6">
 
@@ -1554,9 +1432,7 @@ function Dashboard() {
 
 
 
-/* =============================================================
-   ACHIEVEMENT ICON MAPPING
-============================================================= */
+
 
 const achievementIcons = {
 
@@ -1573,10 +1449,6 @@ const achievementIcons = {
 };
 
 
-
-/* =============================================================
-   ACHIEVEMENT ITEM
-============================================================= */
 
 function AchievementItem({
   achievement,
@@ -1657,9 +1529,7 @@ function AchievementItem({
 
 
 
-/* =============================================================
-   REUSABLE COMPONENTS
-============================================================= */
+
 
 function InfoPill({
   icon,

@@ -29,9 +29,6 @@ const MissionDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  /* ============================================================
-     START MISSION
-  ============================================================ */
 
   const handleStartMission = async () => {
     try {
@@ -74,9 +71,7 @@ const MissionDetails = () => {
     }
   };
 
-  /* ============================================================
-     FETCH MISSION DETAILS
-  ============================================================ */
+
 
   useEffect(() => {
     const fetchMissionDetails = async () => {
@@ -88,7 +83,7 @@ const MissionDetails = () => {
           await getMissionDetails(missionId);
 
         console.log(
-          "✅ Mission details response:",
+          "Mission details response:",
           response
         );
 
@@ -153,9 +148,7 @@ const MissionDetails = () => {
     }
   }, [missionId]);
 
-  /* ============================================================
-     LOADING
-  ============================================================ */
+
 
   if (loading) {
     return (
@@ -174,9 +167,6 @@ const MissionDetails = () => {
     );
   }
 
-  /* ============================================================
-     ERROR
-  ============================================================ */
 
   if (error || !mission) {
     return (
@@ -218,9 +208,7 @@ const MissionDetails = () => {
     );
   }
 
-  /* ============================================================
-     DERIVED VALUES
-  ============================================================ */
+
 
   const progress = mission.progress ?? 0;
 
@@ -260,17 +248,13 @@ const MissionDetails = () => {
   const isRejected =
     mission.status === "rejected";
 
-  /* ============================================================
-     RENDER
-  ============================================================ */
+  
 
   return (
     <div className="min-h-screen bg-career-bg text-white">
       <div className="mx-auto max-w-5xl px-6 py-8">
 
-        {/* ======================================================
-            BACK TO ROADMAP
-        ====================================================== */}
+     
 
         <button
           onClick={() => navigate(-1)}
@@ -284,9 +268,7 @@ const MissionDetails = () => {
           Back to Roadmap
         </button>
 
-        {/* ======================================================
-            MISSION HEADER
-        ====================================================== */}
+
 
         <div className="border-b border-career-border pb-8">
 
@@ -326,9 +308,6 @@ const MissionDetails = () => {
             {mission.description}
           </p>
 
-          {/* ====================================================
-              META BADGES
-          ==================================================== */}
 
           <div className="mt-7 flex flex-wrap gap-3">
 
@@ -369,15 +348,11 @@ const MissionDetails = () => {
           </div>
         </div>
 
-        {/* ======================================================
-            MISSION CONTENT
-        ====================================================== */}
+       
 
         <div className="border-b border-career-border py-8">
 
-          {/* ====================================================
-              YOUR PROGRESS
-          ==================================================== */}
+          
 
           <section className="border-b border-career-border pb-8">
             <div className="mb-3 flex items-center justify-between">
@@ -400,9 +375,6 @@ const MissionDetails = () => {
             </div>
           </section>
 
-          {/* ====================================================
-              WHY THIS MATTERS
-          ==================================================== */}
 
           {mission.whyItMatters && (
             <section className="border-b border-career-border py-8">
@@ -416,9 +388,7 @@ const MissionDetails = () => {
             </section>
           )}
 
-          {/* ====================================================
-              WHAT YOU NEED TO DO
-          ==================================================== */}
+         
 
           <section className="border-b border-career-border py-8">
             <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-300">
@@ -496,9 +466,8 @@ const MissionDetails = () => {
             </div>
           </section>
 
-          {/* ====================================================
-              EVIDENCE / PROOF
-          ==================================================== */}
+      
+
 
           {mission.proofRequired && (
             <section className="border-b border-career-border py-8">
@@ -575,9 +544,7 @@ const MissionDetails = () => {
             </section>
           )}
 
-          {/* ====================================================
-              NO PROOF REQUIRED
-          ==================================================== */}
+         
 
           {!mission.proofRequired && (
             <section className="border-b border-career-border py-8">
@@ -604,10 +571,7 @@ const MissionDetails = () => {
             </section>
           )}
 
-          {/* ====================================================
-              MISSION STATUS
-          ==================================================== */}
-
+    
           <section className="pt-8">
             <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-300">
               Mission Status
@@ -689,9 +653,6 @@ const MissionDetails = () => {
   </div>
 )}
 
-            {/* ==================================================
-                MISSION ACTION
-            ================================================== */}
 
             {startError && (
               <div className="mt-5 rounded-xl border border-red-500/20 bg-red-500/5 p-4">

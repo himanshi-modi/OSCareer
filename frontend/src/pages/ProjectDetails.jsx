@@ -21,10 +21,7 @@ export default function ProjectDetails() {
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // ============================================================
-  // FETCH RESUME PROJECT
-  // ============================================================
-
+ 
   useEffect(() => {
     const fetchProject = async () => {
       try {
@@ -42,9 +39,7 @@ export default function ProjectDetails() {
     fetchProject();
   }, [projectId]);
 
-  // ============================================================
-  // LOADING
-  // ============================================================
+
 
   if (loading) {
     return (
@@ -58,10 +53,7 @@ export default function ProjectDetails() {
     );
   }
 
-  // ============================================================
-  // NOT FOUND
-  // ============================================================
-
+  
   if (!project) {
     return (
       <div className="min-h-screen bg-[#080b14] text-white">
@@ -96,10 +88,6 @@ export default function ProjectDetails() {
     );
   }
 
-  // ============================================================
-  // RESUME PROJECT DETAILS
-  // ============================================================
-
   return (
     <ResumeProjectDetails
       project={project}
@@ -109,19 +97,13 @@ export default function ProjectDetails() {
 }
 
 
-// ============================================================
-// RESUME PROJECT DETAILS
-// ============================================================
-
 function ResumeProjectDetails({ project, navigate }) {
   return (
     <div className="min-h-screen bg-[#080b14] text-white">
 
       <div className="mx-auto max-w-5xl px-5 py-8 sm:px-8">
 
-        {/* ====================================================== */}
-        {/* BACK */}
-        {/* ====================================================== */}
+
 
         <button
           onClick={() => navigate("/projects")}
@@ -132,9 +114,6 @@ function ResumeProjectDetails({ project, navigate }) {
         </button>
 
 
-        {/* ====================================================== */}
-        {/* HEADER */}
-        {/* ====================================================== */}
 
         <div className="rounded-2xl border border-emerald-500/10 bg-emerald-500/[0.025] p-6 sm:p-8">
 
@@ -170,9 +149,7 @@ function ResumeProjectDetails({ project, navigate }) {
         </div>
 
 
-        {/* ====================================================== */}
-        {/* TECHNOLOGIES */}
-        {/* ====================================================== */}
+       
 
         <DetailSection
           title="Technologies"
@@ -207,9 +184,6 @@ function ResumeProjectDetails({ project, navigate }) {
         </DetailSection>
 
 
-        {/* ====================================================== */}
-        {/* SKILLS DEMONSTRATED */}
-        {/* ====================================================== */}
 
         <DetailSection
           title="Skills Demonstrated"
@@ -402,9 +376,6 @@ function ResumeProjectDetails({ project, navigate }) {
 }
 
 
-// ============================================================
-// DETAIL SECTION
-// ============================================================
 
 function DetailSection({ title, icon, children }) {
   return (
