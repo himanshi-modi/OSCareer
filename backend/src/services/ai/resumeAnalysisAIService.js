@@ -127,12 +127,14 @@ Resume:
 ${resumeText}
 `;
 
-    const response = await ai.models.generateContent({
-        model: "gemini-2.5-flash",
-        contents: prompt
-    });
+    const interaction = await ai.interactions.create({
+    model: "gemini-3.8-flash",
+    input: prompt
+});
 
-    const text = response.text;
+const text = interaction.output_text;
+
+   
 
     console.log("\n========== RAW GEMINI RESPONSE ==========\n");
     console.log(text);
