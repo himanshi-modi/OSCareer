@@ -129,7 +129,8 @@ ${resumeText}
 
     const interaction = await ai.interactions.create({
     model: "gemini-3.8-flash",
-    input: prompt
+    input: prompt,
+    timeout: 30000
 });
 
 const text = interaction.output_text;
