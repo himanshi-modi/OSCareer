@@ -1,7 +1,17 @@
 const { GoogleGenAI } = require("@google/genai");
 
 const ai = new GoogleGenAI({
-    apiKey: process.env.GEMINI_API_KEY
+    apiKey: process.env.GEMINI_API_KEY,
+    httpOptions: {
+        retryOptions: {
+            attempts: 5,
+            initialDelay: 1,
+            maxDelay: 10,
+            expBase: 2,
+            jitter: 1,
+            httpStatusCodes: [503]
+        }
+    }
 });
 
 const analyzeResumeText = async (resumeText) => {
