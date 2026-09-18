@@ -255,7 +255,7 @@ function Roadmap() {
         setUserStages(stagesWithMissions);
 
         
-          await getCareerProfile();
+          const profileResponse=await getCareerProfile();
 
         const profileData =
           profileResponse?.data?.data ??

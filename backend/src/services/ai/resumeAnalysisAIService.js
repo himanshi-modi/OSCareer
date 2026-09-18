@@ -14,17 +14,7 @@ const ai = new GoogleGenAI({
     }
 });
 
-async function checkGeminiModels() {
-    console.log("========== AVAILABLE GEMINI MODELS ==========");
 
-    for await (const model of await ai.models.list()) {
-        if (model.supportedActions?.includes("generateContent")) {
-            console.log(model.name);
-        }
-    }
-}
-
-checkGeminiModels();
 
 const analyzeResumeText = async (resumeText) => {
 
@@ -150,7 +140,7 @@ ${resumeText}
 `;
 
     const response = await ai.models.generateContent({
-        model: "gemini-3.6-flash",
+        model: "gemini-3.5-flash",
         contents: prompt
     });
 
