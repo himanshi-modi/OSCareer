@@ -1,7 +1,10 @@
 const { GoogleGenAI } = require("@google/genai");
 
 const ai = new GoogleGenAI({
-    apiKey: process.env.GEMINI_API_KEY
+    apiKey: process.env.GEMINI_API_KEY,
+    httpOptions: {
+        timeout: 30000
+    }
 });
 
 const analyzeResumeText = async (resumeText) => {
@@ -130,7 +133,7 @@ ${resumeText}
     const interaction = await ai.interactions.create({
     model: "gemini-3.8-flash",
     input: prompt,
-    timeout: 30000
+    
 });
 
 const text = interaction.output_text;
