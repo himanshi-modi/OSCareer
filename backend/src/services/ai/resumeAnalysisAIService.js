@@ -1,10 +1,7 @@
 const { GoogleGenAI } = require("@google/genai");
 
 const ai = new GoogleGenAI({
-    apiKey: process.env.GEMINI_API_KEY,
-    httpOptions: {
-        timeout: 30000
-    }
+    apiKey: process.env.GEMINI_API_KEY
 });
 
 const analyzeResumeText = async (resumeText) => {
@@ -130,15 +127,12 @@ Resume:
 ${resumeText}
 `;
 
-    const interaction = await ai.interactions.create({
-    model: "gemini-3.8-flash",
-    input: prompt,
-    
-});
+    const response = await ai.models.generateContent({
+        model: "gemini-3.8-flash",
+        contents: prompt
+    });
 
-const text = interaction.output_text;
-
-   
+    const text = response.text;
 
     console.log("\n========== RAW GEMINI RESPONSE ==========\n");
     console.log(text);
