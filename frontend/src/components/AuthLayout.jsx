@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 function AuthLayout({ children }) {
   return (
     <main className="relative min-h-screen overflow-hidden bg-career-bg text-white">
