@@ -46,7 +46,7 @@ const loginUser=asyncHandler(async(req,res,next)=>{
 const googleLogin = asyncHandler(async (req, res, next) => {
     const result = await authService.googleLogin(req.user);
 
-    const { accessToken, refreshToken } = result;
+    const { accessToken, refreshToken , needsOnboarding} = result;
 
     const redirectUrl =
         `${process.env.CLIENT_URL}/oauth-success` +
