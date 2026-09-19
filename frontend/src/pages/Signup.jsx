@@ -1,7 +1,8 @@
+
 import AuthLayout from "../components/AuthLayout";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { Eye, EyeOff, Check, ArrowRight, Loader2 } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { registerSchema } from "../../../shared/validators/authValidator";
 import { registerUser } from "../api/authApi";
 
@@ -12,7 +13,6 @@ const GoogleIcon = () => (
     viewBox="0 0 24 24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    aria-hidden="true"
   >
     <path
       d="M21.805 12.23c0-.79-.07-1.55-.205-2.28H12v4.31h5.5a4.7 4.7 0 0 1-2.04 3.08v2.56h3.3c1.93-1.78 3.045-4.4 3.045-7.67Z"
@@ -35,8 +35,8 @@ const GoogleIcon = () => (
 
 const LinkedInIcon = () => (
   <svg
-    width="19"
-    height="19"
+    width="20"
+    height="20"
     viewBox="0 0 24 24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -62,20 +62,20 @@ const LinkedInIcon = () => (
 );
 
 function Signup() {
-  const navigate = useNavigate();
-
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
-  const [errors, setErrors] = useState({});
   const [signupError, setSignupError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const [errors, setErrors] = useState({});
+
+  const navigate = useNavigate();
 
   const validateField = (field, value) => {
     const result = registerSchema.shape[field].safeParse(value);
@@ -97,84 +97,29 @@ function Signup() {
     return true;
   };
 
-  const validateConfirmPassword = (value = confirmPassword) => {
-    if (!value) {
-      setErrors((prev) => ({
-        ...prev,
-        confirmPassword: "Please confirm your password",
-      }));
-
-      return false;
-    }
-
-    if (password !== value) {
-      setErrors((prev) => ({
-        ...prev,
-        confirmPassword: "Passwords do not match",
-      }));
-
-      return false;
-    }
-
-    setErrors((prev) => ({
-      ...prev,
-      confirmPassword: "",
-    }));
-
-    return true;
-  };
-
-  const handleFieldChange = (field, value, setter) => {
-    setter(value);
-
-    if (errors[field]) {
-      validateField(field, value);
-    }
-  };
-
-  const handlePasswordChange = (value) => {
-    setPassword(value);
-
-    if (errors.password) {
-      validateField("password", value);
-    }
-
-    if (confirmPassword) {
-      setErrors((prev) => ({
-        ...prev,
-        confirmPassword:
-          value === confirmPassword ? "" : "Passwords do not match",
-      }));
-    }
-  };
-
-  const handleConfirmPasswordChange = (value) => {
-    setConfirmPassword(value);
-
-    if (value) {
-      setErrors((prev) => ({
-        ...prev,
-        confirmPassword:
-          password === value ? "" : "Passwords do not match",
-      }));
-    } else if (errors.confirmPassword) {
-      setErrors((prev) => ({
-        ...prev,
-        confirmPassword: "Please confirm your password",
-      }));
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    setSignupError("");
 
     const nameValid = validateField("name", name);
     const usernameValid = validateField("username", username);
     const emailValid = validateField("email", email);
     const passwordValid = validateField("password", password);
-    const confirmPasswordValid = validateConfirmPassword();
+
+    let confirmPasswordValid = true;
+
+    if (password !== confirmPassword) {
+      setErrors((prev) => ({
+        ...prev,
+        confirmPassword: "Passwords do not match",
+      }));
+
+      confirmPasswordValid = false;
+    } else {
+      setErrors((prev) => ({
+        ...prev,
+        confirmPassword: "",
+      }));
+    }
 
     if (
       !nameValid ||
@@ -189,7 +134,7 @@ function Signup() {
     setIsSubmitting(true);
 
     try {
-      await registerUser({
+      const response = await registerUser({
         name,
         username,
         email,
@@ -197,142 +142,94 @@ function Signup() {
         confirmPassword,
       });
 
+      console.log("Backend response:", response);
+
       navigate("/verify-email-pending", {
-        state: { email },
+        state: {
+          email,
+        },
       });
     } catch (error) {
-      console.error("Registration error:", error);
+  console.error("Registration error:", error);
 
-      const status = error?.response?.status;
-      const message = error?.response?.data?.message;
+  setIsSubmitting(false);
 
-      if (status === 409) {
-        setSignupError(
-          message || "An account with this email already exists."
-        );
-      } else {
-        setSignupError(
-          message || "Something went wrong. Please try again."
-        );
-      }
+  const status = error?.response?.status;
+  const message = error?.response?.data?.message;
 
-      setIsSubmitting(false);
-    }
+  if (status === 409) {
+    setSignupError(
+      message || "An account with this email already exists."
+    );
+  } else {
+    setSignupError(
+      message || "Something went wrong. Please try again."
+    );
+  }
+}
   };
 
-  const passwordStrength = (() => {
-    if (!password) return 0;
+  const handleFieldChange = (field, value, setter) => {
+    setter(value);
 
-    let score = 0;
-
-    if (password.length >= 8) score++;
-    if (/[A-Z]/.test(password)) score++;
-    if (/[a-z]/.test(password)) score++;
-    if (/[0-9]/.test(password)) score++;
-    if (/[^A-Za-z0-9]/.test(password)) score++;
-
-    return score;
-  })();
-
-  const strengthLabel =
-    passwordStrength === 0
-      ? ""
-      : passwordStrength <= 2
-        ? "Weak"
-        : passwordStrength <= 3
-          ? "Fair"
-          : passwordStrength === 4
-            ? "Good"
-            : "Strong";
-
-  const strengthWidth = `${(passwordStrength / 5) * 100}%`;
-
-  const getStrengthColor = () => {
-    if (passwordStrength <= 2) return "bg-red-500";
-    if (passwordStrength === 3) return "bg-amber-400";
-    if (passwordStrength === 4) return "bg-career-blue";
-    return "bg-emerald-400";
-  };
-
-  const inputBase =
-    "w-full rounded-xl border bg-career-surface px-4 py-3.5 text-sm text-white outline-none transition-all duration-200 placeholder:text-slate-600";
-
-  const getInputClass = (field) => {
     if (errors[field]) {
-      return `${inputBase} border-red-500/60 focus:border-red-400 focus:ring-4 focus:ring-red-500/10`;
+      validateField(field, value);
     }
-
-    if (
-      field === "confirmPassword" &&
-      confirmPassword &&
-      !errors.confirmPassword
-    ) {
-      return `${inputBase} border-emerald-500/50 focus:border-emerald-400 focus:ring-4 focus:ring-emerald-500/10`;
-    }
-
-    return `${inputBase} border-career-border focus:border-career-blue focus:ring-4 focus:ring-career-blue/10`;
   };
 
   return (
     <AuthLayout>
-      <div className="animate-[fadeIn_0.4s_ease-out]">
+      <div>
+        {/* Heading */}
+        <div>
+          <p className="text-sm font-medium text-career-blue">
+            Get started
+          </p>
 
-        {/* Header */}
-        <div className="mb-8">
-          <div className="mb-4 inline-flex items-center rounded-full border border-career-blue/20 bg-career-blue/10 px-3 py-1.5">
-            <span className="mr-2 h-1.5 w-1.5 rounded-full bg-career-blue shadow-[0_0_8px_rgba(59,130,246,0.8)]" />
-            <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-career-blue">
-              Get started
-            </span>
-          </div>
-
-          <h1 className="text-3xl font-bold tracking-tight text-white sm:text-[2.15rem] sm:leading-tight">
-            Build your career
-            <span className="block bg-gradient-to-r from-white via-slate-200 to-career-blue bg-clip-text text-transparent">
-              with clarity.
-            </span>
+          <h1 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+            Build your career with clarity.
           </h1>
 
-          <p className="mt-4 max-w-md text-sm leading-6 text-slate-500">
-            Create your Career OS account and start building a
-            personalized career journey around your goals.
+          <p className="mt-4 text-sm leading-6 text-slate-500">
+            Create your Career OS account and start building your
+            personalized career journey.
           </p>
         </div>
 
-        {/* OAuth buttons */}
-        <div className="grid gap-3 sm:grid-cols-2">
-
+        {/* Social Login */}
+        <div className="mt-8 space-y-3">
+          {/* Google */}
           <button
             type="button"
             onClick={() => {
               window.location.href =
-                `${import.meta.env.VITE_API_URL}/api/v1/auth/google`;
+  `${import.meta.env.VITE_API_URL}/api/v1/auth/google`;
             }}
-            className="group flex min-h-[50px] items-center justify-center gap-2.5 rounded-xl border border-career-border bg-career-surface px-4 text-sm font-medium text-slate-200 transition-all duration-200 hover:-translate-y-0.5 hover:border-slate-600 hover:bg-career-card hover:shadow-lg hover:shadow-black/10 active:translate-y-0 focus:outline-none focus:ring-4 focus:ring-career-blue/10"
+            className="flex w-full items-center justify-center gap-3 rounded-xl border border-career-border bg-career-surface px-5 py-3.5 text-sm font-medium text-slate-200 transition duration-200 hover:border-slate-600 hover:bg-career-card"
           >
             <GoogleIcon />
-            <span>Google</span>
+            Continue with Google
           </button>
 
+          {/* LinkedIn */}
           <button
             type="button"
             onClick={() => {
               window.location.href =
-                `${import.meta.env.VITE_API_URL}/api/v1/auth/linkedin`;
+  `${import.meta.env.VITE_API_URL}/api/v1/auth/linkedin`;
             }}
-            className="group flex min-h-[50px] items-center justify-center gap-2.5 rounded-xl border border-career-border bg-career-surface px-4 text-sm font-medium text-slate-200 transition-all duration-200 hover:-translate-y-0.5 hover:border-slate-600 hover:bg-career-card hover:shadow-lg hover:shadow-black/10 active:translate-y-0 focus:outline-none focus:ring-4 focus:ring-career-blue/10"
+            className="flex w-full items-center justify-center gap-3 rounded-xl border border-career-border bg-career-surface px-5 py-3.5 text-sm font-medium text-slate-200 transition duration-200 hover:border-slate-600 hover:bg-career-card"
           >
             <LinkedInIcon />
-            <span>LinkedIn</span>
+            Continue with LinkedIn
           </button>
-
         </div>
 
         {/* Divider */}
         <div className="my-8 flex items-center gap-4">
           <div className="h-px flex-1 bg-career-border" />
 
-          <span className="whitespace-nowrap text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-600">
+          <span className="whitespace-nowrap text-[11px] font-medium uppercase tracking-[0.15em] text-slate-600">
             or continue with email
           </span>
 
@@ -340,38 +237,34 @@ function Signup() {
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} noValidate className="space-y-5">
-
+        <form onSubmit={handleSubmit} className="space-y-5">
           {/* Name */}
           <div>
             <label
               htmlFor="name"
-              className="mb-2 block text-sm font-medium text-slate-300"
+              className="text-sm font-medium text-slate-300"
             >
               Full name
             </label>
 
             <input
               id="name"
-              name="name"
               type="text"
-              autoComplete="name"
               placeholder="Your name"
               value={name}
               onChange={(e) =>
-                handleFieldChange("name", e.target.value, setName)
+                handleFieldChange(
+                  "name",
+                  e.target.value,
+                  setName
+                )
               }
               onBlur={() => validateField("name", name)}
-              aria-invalid={!!errors.name}
-              aria-describedby={errors.name ? "name-error" : undefined}
-              className={getInputClass("name")}
+              className="mt-2 w-full rounded-xl border border-career-border bg-career-surface px-4 py-3.5 text-sm text-white outline-none transition duration-200 placeholder:text-slate-700 focus:border-career-blue focus:ring-1 focus:ring-career-blue/30"
             />
 
             {errors.name && (
-              <p
-                id="name-error"
-                className="mt-2 text-xs font-medium text-red-400"
-              >
+              <p className="mt-1.5 text-xs text-red-400">
                 {errors.name}
               </p>
             )}
@@ -381,77 +274,57 @@ function Signup() {
           <div>
             <label
               htmlFor="email"
-              className="mb-2 block text-sm font-medium text-slate-300"
+              className="text-sm font-medium text-slate-300"
             >
               Email
             </label>
 
             <input
               id="email"
-              name="email"
               type="email"
-              autoComplete="email"
               placeholder="you@example.com"
               value={email}
-              onChange={(e) => {
-                setSignupError("");
-                handleFieldChange(
+              onChange={(e) =>{
+                  setSignupError("");
+                  handleFieldChange(
                   "email",
                   e.target.value,
                   setEmail
                 );
-              }}
-              onBlur={() => validateField("email", email)}
-              aria-invalid={!!errors.email || !!signupError}
-              aria-describedby={
-                errors.email || signupError
-                  ? "email-error"
-                  : undefined
               }
-              className={getInputClass("email")}
+                
+              }
+              onBlur={() => validateField("email", email)}
+              className="mt-2 w-full rounded-xl border border-career-border bg-career-surface px-4 py-3.5 text-sm text-white outline-none transition duration-200 placeholder:text-slate-700 focus:border-career-blue focus:ring-1 focus:ring-career-blue/30"
             />
 
             {errors.email && (
-              <p
-                id="email-error"
-                className="mt-2 text-xs font-medium text-red-400"
-              >
+              <p className="mt-1.5 text-xs text-red-400">
                 {errors.email}
               </p>
             )}
-
-            {signupError && !errors.email && (
-              <div
-                id="email-error"
-                className="mt-2 rounded-lg border border-red-500/15 bg-red-500/5 px-3 py-2.5"
-              >
-                <p className="text-xs leading-5 text-red-300">
-                  {signupError}{" "}
-                  <Link
-                    to="/login"
-                    className="font-semibold text-career-blue transition hover:text-career-purple"
-                  >
-                    Log in
-                  </Link>
-                </p>
-              </div>
-            )}
+            {signupError && (
+              <p className="mt-1.5 text-xs text-red-400">
+              {signupError}{" "}
+            <Link to="/login" className="font-medium text-career-blue hover:text-career-purple">
+            Log in
+            </Link>
+            </p>
+          )}
           </div>
 
           {/* Username */}
           <div>
             <label
               htmlFor="username"
-              className="mb-2 block text-sm font-medium text-slate-300"
+              className="text-sm font-medium text-slate-300"
             >
               Username
             </label>
 
             <input
               id="username"
-              name="username"
               type="text"
-              autoComplete="username"
               placeholder="Choose a username"
               value={username}
               onChange={(e) =>
@@ -464,18 +337,11 @@ function Signup() {
               onBlur={() =>
                 validateField("username", username)
               }
-              aria-invalid={!!errors.username}
-              aria-describedby={
-                errors.username ? "username-error" : undefined
-              }
-              className={getInputClass("username")}
+              className="mt-2 w-full rounded-xl border border-career-border bg-career-surface px-4 py-3.5 text-sm text-white outline-none transition duration-200 placeholder:text-slate-700 focus:border-career-blue focus:ring-1 focus:ring-career-blue/30"
             />
 
             {errors.username && (
-              <p
-                id="username-error"
-                className="mt-2 text-xs font-medium text-red-400"
-              >
+              <p className="mt-1.5 text-xs text-red-400">
                 {errors.username}
               </p>
             )}
@@ -483,54 +349,50 @@ function Signup() {
 
           {/* Password */}
           <div>
-            <div className="mb-2 flex items-center justify-between">
-              <label
-                htmlFor="password"
-                className="text-sm font-medium text-slate-300"
-              >
-                Password
-              </label>
+            <label
+              htmlFor="password"
+              className="text-sm font-medium text-slate-300"
+            >
+              Password
+            </label>
 
-              {passwordStrength > 0 && (
-                <span
-                  className={`text-[11px] font-semibold ${
-                    passwordStrength <= 2
-                      ? "text-red-400"
-                      : passwordStrength === 3
-                        ? "text-amber-400"
-                        : passwordStrength === 4
-                          ? "text-career-blue"
-                          : "text-emerald-400"
-                  }`}
-                >
-                  {strengthLabel}
-                </span>
-              )}
-            </div>
-
-            <div className="relative">
+            <div className="relative mt-2">
               <input
                 id="password"
-                name="password"
                 type={showPassword ? "text" : "password"}
-                autoComplete="new-password"
                 placeholder="Create a password"
                 value={password}
-                onChange={(e) =>
-                  handlePasswordChange(e.target.value)
-                }
+                onChange={(e) => {
+                  const value = e.target.value;
+
+                  setPassword(value);
+
+                  if (errors.password) {
+                    validateField("password", value);
+                  }
+
+                  if (errors.confirmPassword) {
+                    if (value !== confirmPassword) {
+                      setErrors((prev) => ({
+                        ...prev,
+                        confirmPassword:
+                          "Passwords do not match",
+                      }));
+                    } else {
+                      setErrors((prev) => ({
+                        ...prev,
+                        confirmPassword: "",
+                      }));
+                    }
+                  }
+                }}
                 onBlur={() =>
                   validateField("password", password)
                 }
-                aria-invalid={!!errors.password}
-                aria-describedby={
-                  errors.password
-                    ? "password-error"
-                    : undefined
-                }
-                className={`${getInputClass(
-                  "password"
-                )} pr-12`}
+                onCopy={(e) => e.preventDefault()}
+                onCut={(e) => e.preventDefault()}
+                onSelect={(e) => e.preventDefault()}
+                className="w-full rounded-xl border border-career-border bg-career-surface px-4 py-3.5 pr-12 text-sm text-white outline-none transition duration-200 placeholder:text-slate-700 focus:border-career-blue focus:ring-1 focus:ring-career-blue/30"
               />
 
               <button
@@ -538,7 +400,7 @@ function Signup() {
                 onClick={() =>
                   setShowPassword((prev) => !prev)
                 }
-                className="absolute right-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-lg text-slate-500 transition hover:bg-white/5 hover:text-slate-300 focus:outline-none focus:ring-2 focus:ring-career-blue/30"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 transition hover:text-slate-300"
                 aria-label={
                   showPassword
                     ? "Hide password"
@@ -553,73 +415,70 @@ function Signup() {
               </button>
             </div>
 
-            {/* Password strength */}
-            {password && (
-              <div className="mt-2.5">
-                <div className="h-1 overflow-hidden rounded-full bg-slate-800">
-                  <div
-                    className={`h-full rounded-full transition-all duration-300 ${getStrengthColor()}`}
-                    style={{ width: strengthWidth }}
-                  />
-                </div>
-
-                <p className="mt-2 text-[11px] text-slate-600">
-                  Use 8+ characters with uppercase, lowercase,
-                  numbers and symbols.
-                </p>
-              </div>
-            )}
-
             {errors.password && (
-              <p
-                id="password-error"
-                className="mt-2 text-xs font-medium text-red-400"
-              >
+              <p className="mt-1.5 text-xs text-red-400">
                 {errors.password}
               </p>
             )}
           </div>
 
-          {/* Confirm password */}
+          {/* Confirm Password */}
           <div>
             <label
               htmlFor="confirmPassword"
-              className="mb-2 block text-sm font-medium text-slate-300"
+              className="text-sm font-medium text-slate-300"
             >
               Confirm password
             </label>
 
-            <div className="relative">
+            <div className="relative mt-2">
               <input
                 id="confirmPassword"
-                name="confirmPassword"
                 type={
                   showConfirmPassword
                     ? "text"
                     : "password"
                 }
-                autoComplete="new-password"
                 placeholder="Confirm your password"
                 value={confirmPassword}
-                onChange={(e) =>
-                  handleConfirmPasswordChange(
-                    e.target.value
-                  )
-                }
-                onBlur={() =>
-                  validateConfirmPassword(
-                    confirmPassword
-                  )
-                }
-                aria-invalid={!!errors.confirmPassword}
-                aria-describedby={
-                  errors.confirmPassword
-                    ? "confirm-password-error"
-                    : undefined
-                }
-                className={`${getInputClass(
-                  "confirmPassword"
-                )} pr-12`}
+                onChange={(e) => {
+                  const value = e.target.value;
+
+                  setConfirmPassword(value);
+
+                  if (errors.confirmPassword) {
+                    if (password !== value) {
+                      setErrors((prev) => ({
+                        ...prev,
+                        confirmPassword:
+                          "Passwords do not match",
+                      }));
+                    } else {
+                      setErrors((prev) => ({
+                        ...prev,
+                        confirmPassword: "",
+                      }));
+                    }
+                  }
+                }}
+                onBlur={() => {
+                  if (password !== confirmPassword) {
+                    setErrors((prev) => ({
+                      ...prev,
+                      confirmPassword:
+                        "Passwords do not match",
+                    }));
+                  } else {
+                    setErrors((prev) => ({
+                      ...prev,
+                      confirmPassword: "",
+                    }));
+                  }
+                }}
+                onCopy={(e) => e.preventDefault()}
+                onCut={(e) => e.preventDefault()}
+                onSelect={(e) => e.preventDefault()}
+                className="w-full rounded-xl border border-career-border bg-career-surface px-4 py-3.5 pr-12 text-sm text-white outline-none transition duration-200 placeholder:text-slate-700 focus:border-career-blue focus:ring-1 focus:ring-career-blue/30"
               />
 
               <button
@@ -629,7 +488,7 @@ function Signup() {
                     (prev) => !prev
                   )
                 }
-                className="absolute right-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-lg text-slate-500 transition hover:bg-white/5 hover:text-slate-300 focus:outline-none focus:ring-2 focus:ring-career-blue/30"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 transition hover:text-slate-300"
                 aria-label={
                   showConfirmPassword
                     ? "Hide confirm password"
@@ -644,67 +503,35 @@ function Signup() {
               </button>
             </div>
 
-            {confirmPassword &&
-              !errors.confirmPassword &&
-              password === confirmPassword && (
-                <div className="mt-2 flex items-center gap-1.5 text-xs font-medium text-emerald-400">
-                  <Check size={14} />
-                  Passwords match
-                </div>
-              )}
-
             {errors.confirmPassword && (
-              <p
-                id="confirm-password-error"
-                className="mt-2 text-xs font-medium text-red-400"
-              >
+              <p className="mt-1.5 text-xs text-red-400">
                 {errors.confirmPassword}
               </p>
             )}
           </div>
 
-          {/* Submit */}
+          {/* Create Account */}
           <button
             type="submit"
             disabled={isSubmitting}
-            className="group mt-2 flex min-h-[52px] w-full items-center justify-center gap-2 rounded-xl bg-career-blue px-5 text-sm font-semibold text-white shadow-lg shadow-career-blue/10 transition-all duration-200 hover:-translate-y-0.5 hover:bg-career-purple hover:shadow-xl hover:shadow-career-purple/20 active:translate-y-0 disabled:cursor-not-allowed disabled:translate-y-0 disabled:opacity-60"
+            className="w-full rounded-xl bg-career-blue px-5 py-3.5 text-sm font-semibold text-white transition duration-200 hover:bg-career-purple hover:shadow-lg hover:shadow-career-purple/20 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {isSubmitting ? (
-              <>
-                <Loader2
-                  size={17}
-                  className="animate-spin"
-                />
-                Creating your account...
-              </>
-            ) : (
-              <>
-                Create Account
-                <ArrowRight
-                  size={17}
-                  className="transition-transform duration-200 group-hover:translate-x-1"
-                />
-              </>
-            )}
+            {isSubmitting
+              ? "Creating account..."
+              : "Create Account"}
           </button>
         </form>
 
         {/* Login */}
-        <p className="mt-7 text-center text-sm text-slate-500">
+        <p className="mt-8 text-center text-sm text-slate-500">
           Already have an account?{" "}
+
           <Link
             to="/login"
-            className="font-semibold text-career-blue transition hover:text-career-purple"
+            className="font-medium text-career-blue transition hover:text-career-purple"
           >
-            Sign in
+            Sign In
           </Link>
-        </p>
-
-        {/* Privacy */}
-        <p className="mx-auto mt-5 max-w-sm text-center text-[11px] leading-5 text-slate-700">
-          By creating an account, you agree to use Career OS
-          responsibly and understand that your career data is
-          securely stored.
         </p>
       </div>
     </AuthLayout>
@@ -712,3 +539,4 @@ function Signup() {
 }
 
 export default Signup;
+
