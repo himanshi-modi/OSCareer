@@ -28,11 +28,11 @@ function OAuthSuccess() {
     localStorage.setItem("refreshToken", refreshToken);
 
     if (needsOnboarding) {
-      console.log("➡️ REDIRECTING TO ONBOARDING");
+      console.log("REDIRECTING TO ONBOARDING");
 
       navigate("/onboarding/resume", { replace: true });
     } else {
-      console.log("➡️ REDIRECTING TO DASHBOARD");
+      console.log(" REDIRECTING TO DASHBOARD");
 
       navigate("/dashboard", { replace: true });
     }

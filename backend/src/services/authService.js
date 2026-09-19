@@ -68,7 +68,6 @@ const verifyEmail = async (token) => {
 
     console.log("🔐 Hashed token:", hashedToken);
 
-    // DEBUG: find by token ONLY
     const tokenUser = await User.findOne({
         emailVerificationToken: hashedToken
     });
@@ -85,7 +84,6 @@ const verifyEmail = async (token) => {
             : "NO USER"
     );
 
-    // Actual validation
     const user = await User.findOne({
         emailVerificationToken: hashedToken,
         emailVerificationTokenExpires: {
@@ -256,7 +254,7 @@ const linkedinLogin = async (user) => {
         );
     }
 
-    // Check whether onboarding has been completed
+    
     const careerProfile = await CareerProfile.findOne({
         userId: user._id,
         isActive: true,
@@ -466,7 +464,7 @@ const updateProfile = async (userId, profileData) => {
         );
     }
 
-    // Username
+  
     if (username !== undefined && username !== user.username) {
         const existingUser = await User.findOne({
             username,
@@ -483,7 +481,7 @@ const updateProfile = async (userId, profileData) => {
         user.username = username;
     }
 
-    // Other editable fields
+
     if (name !== undefined) {
         user.name = name;
     }
