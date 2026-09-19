@@ -67,7 +67,7 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
+  const [signupError, setSignupError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
@@ -150,10 +150,23 @@ function Signup() {
         },
       });
     } catch (error) {
-      console.error("Registration error:", error);
+  console.error("Registration error:", error);
 
-      setIsSubmitting(false);
-    }
+  setIsSubmitting(false);
+
+  const status = error?.response?.status;
+  const message = error?.response?.data?.message;
+
+  if (status === 409) {
+    setSignupError(
+      message || "An account with this email already exists."
+    );
+  } else {
+    setSignupError(
+      message || "Something went wrong. Please try again."
+    );
+  }
+}
   };
 
   const handleFieldChange = (field, value, setter) => {
@@ -271,12 +284,15 @@ function Signup() {
               type="email"
               placeholder="you@example.com"
               value={email}
-              onChange={(e) =>
-                handleFieldChange(
+              onChange={(e) =>{
+                  setSignupError("");
+                  handleFieldChange(
                   "email",
                   e.target.value,
                   setEmail
-                )
+                );
+              }
+                
               }
               onBlur={() => validateField("email", email)}
               className="mt-2 w-full rounded-xl border border-career-border bg-career-surface px-4 py-3.5 text-sm text-white outline-none transition duration-200 placeholder:text-slate-700 focus:border-career-blue focus:ring-1 focus:ring-career-blue/30"
@@ -287,6 +303,14 @@ function Signup() {
                 {errors.email}
               </p>
             )}
+            {signupError && (
+              <p className="mt-1.5 text-xs text-red-400">
+              {signupError}{" "}
+            <Link to="/login" className="font-medium text-career-blue hover:text-career-purple">
+            Log in
+            </Link>
+            </p>
+          )}
           </div>
 
           {/* Username */}
