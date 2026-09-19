@@ -8,16 +8,24 @@ function OAuthSuccess() {
   useEffect(() => {
     const accessToken = searchParams.get("accessToken");
     const refreshToken = searchParams.get("refreshToken");
+    const needsOnboarding =
+      searchParams.get("needsOnboarding") === "true";
 
     if (!accessToken || !refreshToken) {
       navigate("/login", { replace: true });
       return;
     }
 
+    // Store authentication tokens
     localStorage.setItem("accessToken", accessToken);
     localStorage.setItem("refreshToken", refreshToken);
 
-    navigate("/dashboard", { replace: true });
+    // Decide where the user should go
+    if (needsOnboarding) {
+      navigate("/resume-onboarding", { replace: true });
+    } else {
+      navigate("/dashboard", { replace: true });
+    }
   }, [navigate, searchParams]);
 
   return (

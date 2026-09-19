@@ -198,7 +198,13 @@ const googleLogin = async (user) => {
             403
         );
     }
+     const careerProfile = await CareerProfile.findOne({
+        userId: user._id,
+        isActive: true,
+        isDeleted: false
+    });
 
+    const needsOnboarding = !careerProfile;
     const accessToken = generateAccessToken(user);
     const refreshToken = generateRefreshToken(user);
 
@@ -231,10 +237,34 @@ const googleLogin = async (user) => {
             profilePicture: user.profilePicture
         },
         accessToken,
-        refreshToken
+        refreshToken,
+        needsOnboarding
     };
 };
 const linkedinLogin = async (user) => {
+    if (!user) {
+        throw new AppError(
+            AUTH_MESSAGES.INVALID_CREDENTIALS,
+            401
+        );
+    }
+
+    if (user.isDeleted) {
+        throw new AppError(
+            AUTH_MESSAGES.ACCOUNT_DELETED,
+            403
+        );
+    }
+
+    // Check whether onboarding has been completed
+    const careerProfile = await CareerProfile.findOne({
+        userId: user._id,
+        isActive: true,
+        isDeleted: false
+    });
+
+    const needsOnboarding = !careerProfile;
+
     const accessToken = generateAccessToken(user);
     const refreshToken = generateRefreshToken(user);
 
@@ -270,7 +300,8 @@ const linkedinLogin = async (user) => {
             profilePicture: user.profilePicture
         },
         accessToken,
-        refreshToken
+        refreshToken,
+        needsOnboarding
     };
 };
 const refreshToken=async(refreshToken)=>{

@@ -685,10 +685,7 @@ const getMissionDetails = async (userId, missionId) => {
         );
     }
 
-    // ============================================================
-    // 4. Get mission template
-    // ============================================================
-
+   
     const missionTemplate = await MissionTemplate.findOne({
         _id: missionId
     }).lean();
