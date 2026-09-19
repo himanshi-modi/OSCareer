@@ -10,6 +10,12 @@ function OAuthSuccess() {
     const refreshToken = searchParams.get("refreshToken");
     const needsOnboarding =
       searchParams.get("needsOnboarding") === "true";
+       console.log("OAUTH SUCCESS PARAMS:", {
+    accessTokenExists: !!accessToken,
+    refreshTokenExists: !!refreshToken,
+    rawNeedsOnboarding: searchParams.get("needsOnboarding"),
+    needsOnboarding
+  });
 
     if (!accessToken || !refreshToken) {
       navigate("/login", { replace: true });
@@ -22,8 +28,11 @@ function OAuthSuccess() {
 
     // Decide where the user should go
     if (needsOnboarding) {
-      navigate("/resume-onboarding", { replace: true });
+       console.log("➡️ REDIRECTING TO ONBOARDING");
+      navigate("/onboarding/resumes", { replace: true });
+
     } else {
+      console.log("➡️ REDIRECTING TO DASHBOARD");
       navigate("/dashboard", { replace: true });
     }
   }, [navigate, searchParams]);

@@ -51,7 +51,9 @@ const googleLogin = asyncHandler(async (req, res, next) => {
     const redirectUrl =
         `${process.env.CLIENT_URL}/oauth-success` +
         `?accessToken=${encodeURIComponent(accessToken)}` +
-        `&refreshToken=${encodeURIComponent(refreshToken)}`;
+        `&refreshToken=${encodeURIComponent(refreshToken)}`+
+        `&needsOnboarding=${needsOnboarding}`;
+        console.log("GOOGLE REDIRECT:", redirectUrl);
 
     return res.redirect(redirectUrl);
 });
